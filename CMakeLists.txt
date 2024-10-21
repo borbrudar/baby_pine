@@ -11,6 +11,7 @@ set (CMAKE_CXX_STANDARD 17)
 #---------ADD SOURCE AND HEADER FILES ---------------
 set(SOURCE_FILE_NAMES
    main
+   Token
 )
 
 list(TRANSFORM SOURCE_FILE_NAMES APPEND ".cpp")
