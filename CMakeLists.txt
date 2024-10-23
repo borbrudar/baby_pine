@@ -5,13 +5,15 @@ if(WIN32)
 endif()
 set(PROJECT_NAME baby_pine)
 project(${PROJECT_NAME} VERSION 0.1.0)
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 
 #---------ADD SOURCE AND HEADER FILES ---------------
 set(SOURCE_FILE_NAMES
    main
    Token
+   Scanner
+   ErrorLogger
 )
 
 list(TRANSFORM SOURCE_FILE_NAMES APPEND ".cpp")

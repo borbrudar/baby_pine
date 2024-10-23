@@ -1,19 +1,16 @@
 #include <bits/stdc++.h>
+#include "ErrorLogger.h"
+#include "Scanner.h"
 
-bool hadError = false;
+ErrorLogger logger;
 
-void report(int line,std::string where, std::string message){
-    std::cout<<"[line "<<line<<"] Error "<<where<<": "<<message<<std::endl;
-    hadError=true;
-}
+void run(std::string source){
+    Scanner scanner = Scanner(source);
+    std::vector<Token> tokens = scanner.scanTokens();
 
-void error(int line,std::string message){
-    report(line,"",message);
-}
 
-void run(std::string code){
-    std::cout<<code<<std::endl;
-
+    for(Token token : tokens)
+        std::cout<<token<<" ";
 }
 
 void runFile(std::string path){
@@ -21,7 +18,7 @@ void runFile(std::string path){
     std::stringstream buffer;
     buffer << file.rdbuf();
     run(buffer.str());
-    if (hadError) exit(65);
+    if (logger.hadError) exit(65);
 }
 
 
@@ -33,7 +30,7 @@ void runPrompt(){
         getline(std::cin,line);
         if(line == "") break;
         run(line);
-        hadError = false;
+        logger.hadError = false;
     }
 }
 
