@@ -25,7 +25,7 @@ private:
     bool isdigit(char c);
     bool isalpha(char c);
     bool isalnum(char c);
-    void indentifier();
+    void identifier();
 
     std::string source;
     std::vector<Token> tokens;

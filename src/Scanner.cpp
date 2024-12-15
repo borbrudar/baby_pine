@@ -51,7 +51,9 @@ void Scanner::scanToken()
         case '\n':
             line++;
             break;
-        
+        case '"':
+            string();
+            break;
 
         default:
             if(isdigit(c)){
@@ -110,7 +112,7 @@ void Scanner::number()
 {
     while(isdigit(peek())) advance();
 
-    if(peek() == '.' && isdigit(peek())){
+    if(peek() == '.' && isdigit(peekNext())){
         advance();
         while(isdigit(peek())) advance();
     }
@@ -123,7 +125,7 @@ bool Scanner::isdigit(char c)
     return c >= '0' && c <= '9';
 }
 
-char Scanner::isalpha(char c)
+bool Scanner::isalpha(char c)
 {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 }
@@ -133,25 +135,28 @@ bool Scanner::isalnum(char c)
     return isalpha(c) || isdigit(c);
 }
 
-void Scanner::indentifier()
+void Scanner::identifier()
 {
     while(isalnum(peek())) advance();
 
     std::string text = source.substr(start, current-start);
+    if (keywords.find(text) == keywords.end()) {
+        addToken(TokenType::IDENTIFIER);
+        return;
+    }
     TokenType type = keywords[text];
-    if(type == TokenType::NIL) type = TokenType::IDENTIFIER;
     addToken(type);
 }
 
 void Scanner::addToken(TokenType type, std::string literal)
 {
-    std::string text = source.substr();
+    std::string text = source.substr(start, current-start);
     tokens.push_back(Token(type,text,literal,line));
 }
 
 void Scanner::addToken(TokenType type, double number_literal)
 {
-    std::string text = source.substr();
+    std::string text = source.substr(start, current-start);
     tokens.push_back(Token(type,text,number_literal,line));
 }
 

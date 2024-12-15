@@ -10,7 +10,7 @@ void run(std::string source){
 
 
     for(Token token : tokens)
-        std::cout<<token<<" ";
+        std::cout<<token;
 }
 
 void runFile(std::string path){

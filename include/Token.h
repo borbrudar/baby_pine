@@ -49,7 +49,7 @@ const std::string toName[TOKEN_COUNT] = {
 
 class Token{
     public:
-
+    Token() = default;
     Token(TokenType type, std::string lexeme, std::string literal, int line);
     Token(TokenType type, std::string lexeme, double number_literal, int line);
 
