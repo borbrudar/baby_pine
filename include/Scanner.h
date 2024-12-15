@@ -16,7 +16,7 @@ private:
     char advance();
     void addToken(TokenType type);
     void addToken(TokenType, std::string _literal); // plaeholder idk the type yet lol
-
+    bool match(char expected);
 
     std::string source;
     std::vector<Token> tokens;
