@@ -51,6 +51,7 @@ class Token{
     public:
 
     Token(TokenType type, std::string lexeme, std::string literal, int line);
+    Token(TokenType type, std::string lexeme, double number_literal, int line);
 
     friend std::ostream& operator<<(std::ostream& os, const Token& obj) {
         os << toName[obj.type] << " " << obj.lexeme << " " << obj.literal << "\n";
@@ -61,5 +62,6 @@ class Token{
     TokenType type;
     std::string lexeme;
     std::string literal;
+    double number_literal;
     int line;
 };

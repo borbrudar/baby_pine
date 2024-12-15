@@ -54,7 +54,11 @@ void Scanner::scanToken()
         
 
         default:
-            logger.error(line, "Unexpected character.");
+            if(isdigit(c)){
+                number();
+            } else {
+                logger.error(line, "Unexpected character.");
+            }
             break;
     }
 
@@ -76,15 +80,62 @@ char Scanner::peek()
     return source[current];  
 }
 
+char Scanner::peekNext()
+{
+    if(current+1 >= source.size()) return '\0';
+    return source[current+1];
+}
+
+void Scanner::string()
+{
+    while(peek() != '"' && !isAtEnd()){
+        if(peek() == '\n') line++;
+        advance();
+    }
+
+    if(isAtEnd()){
+        logger.error(line, "Unterminated string.");
+        return;
+    }
+
+    advance();
+
+    std::string value = source.substr(start+1, current-start-2);
+    addToken(TokenType::STRING, value);
+}
+
+void Scanner::number()
+{
+    while(isdigit(peek())) advance();
+
+    if(peek() == '.' && isdigit(peek())){
+        advance();
+        while(isdigit(peek())) advance();
+    }
+
+    addToken(TokenType::NUMBER, stod(source.substr(start, current-start)));
+}
+
+bool Scanner::isdigit(char c)
+{
+    return c >= '0' && c <= '9';
+}
+
 void Scanner::addToken(TokenType type, std::string literal)
 {
     std::string text = source.substr();
     tokens.push_back(Token(type,text,literal,line));
 }
 
-bool Scanner::bool match(char expected) {
+void Scanner::addToken(TokenType type, double number_literal)
+{
+    std::string text = source.substr();
+    tokens.push_back(Token(type,text,number_literal,line));
+}
+
+bool Scanner::match(char expected) {
     if (isAtEnd()) return false;
-    if (source.charAt(current) != expected) return false;
+    if (source[current] != expected) return false;
     current++;
     return true;
 }
