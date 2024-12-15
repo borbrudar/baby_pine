@@ -23,9 +23,31 @@ private:
     void string();
     void number();
     bool isdigit(char c);
+    bool isalpha(char c);
+    bool isalnum(char c);
+    void indentifier();
 
     std::string source;
     std::vector<Token> tokens;
     int start=0,current=0,line=1;
     ErrorLogger logger;
+
+    std::map<std::string,TokenType> keywords = {
+        {"and", TokenType::AND},
+        {"class", TokenType::CLASS},
+        {"else", TokenType::ELSE},
+        {"false", TokenType::FALSE},
+        {"for", TokenType::FOR},
+        {"fun", TokenType::FUN},
+        {"if", TokenType::IF},
+        {"nil", TokenType::NIL},
+        {"or", TokenType::OR},
+        {"print", TokenType::PRINT},
+        {"return", TokenType::RETURN},
+        {"super", TokenType::SUPER},
+        {"this", TokenType::THIS},
+        {"true", TokenType::TRUE},
+        {"var", TokenType::VAR},
+        {"while", TokenType::WHILE}
+    };
 };

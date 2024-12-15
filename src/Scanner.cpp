@@ -56,6 +56,8 @@ void Scanner::scanToken()
         default:
             if(isdigit(c)){
                 number();
+            } else if(isalpha(c)){
+                identifier();
             } else {
                 logger.error(line, "Unexpected character.");
             }
@@ -119,6 +121,26 @@ void Scanner::number()
 bool Scanner::isdigit(char c)
 {
     return c >= '0' && c <= '9';
+}
+
+char Scanner::isalpha(char c)
+{
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+bool Scanner::isalnum(char c)
+{
+    return isalpha(c) || isdigit(c);
+}
+
+void Scanner::indentifier()
+{
+    while(isalnum(peek())) advance();
+
+    std::string text = source.substr(start, current-start);
+    TokenType type = keywords[text];
+    if(type == TokenType::NIL) type = TokenType::IDENTIFIER;
+    addToken(type);
 }
 
 void Scanner::addToken(TokenType type, std::string literal)
