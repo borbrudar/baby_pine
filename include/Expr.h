@@ -14,7 +14,7 @@ public:
  Expr left;
  Token op;
  Expr right;
-};
+    };
 
 class Grouping : public Expr{
 public:
@@ -22,7 +22,7 @@ public:
         this->expression = expression;
 }
  Expr expression;
-};
+    };
 
 class Literal : public Expr{
 public:
@@ -30,7 +30,7 @@ public:
         this->value = value;
 }
  Expr value;
-};
+    };
 
 class Unary : public Expr{
 public:
@@ -40,4 +40,4 @@ public:
 }
  Token op;
  Expr right;
-};
+    };

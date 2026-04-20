@@ -24,7 +24,7 @@ static inline void trim(std::string &s) {
 
 void defineAST(std::string path, std::string baseName, std::vector<std::string> types){
     std::ofstream file;
-    file.open(baseName + ".h");
+    file.open(path + "/" +  baseName + ".h");
     file<<"#pragma once\n";
     file<<"#include <bits/stdc++.h>\n";
     file<<"#include \"Token.h\"\n";
@@ -53,8 +53,25 @@ void defineAST(std::string path, std::string baseName, std::vector<std::string> 
         }
         file<<"};";
     }
-
+    file.close();
 }
+
+// test
+
+void defineVisitor(std::string path, std::string baseName, std::vector<std::string> types){
+    std::ofstream file;
+    file.open(path + "/" +  baseName + ".h", std::ios::app);
+    file<<"\n\nclass "<<baseName<<"Visitor{\n";
+    file<<"public:\n";
+    file<<"    virtual void visit("<<baseName<<"* "<<baseName<<") = 0;\n";
+    for(auto u : types){
+        std::string className = u.substr(0, u.find(":")-1);
+        file<<"    virtual void visit("<<className<<"* "<<className<<") = 0;\n";
+    }
+    file<<"};";
+    file.close();
+}
+
 
 int main(int argc, char** argv){
     std::string out;
@@ -64,10 +81,14 @@ int main(int argc, char** argv){
         std::cout<<"Invalid usage, specify directory to gen ast to.\n";
         return 1;
     }
-    defineAST(out, "Expr", {
+
+    std::vector<std::string> types = {
         "Binary : Expr left, Token op, Expr right", 
         "Grouping : Expr expression", 
         "Literal : Expr value", 
         "Unary : Token op, Expr right"
-    });
+    };
+
+    defineVisitor(out, "Expr", types);
+    defineAST(out, "Expr", types);
 }
